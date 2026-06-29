@@ -1,0 +1,15 @@
+# 仅托管前端静态页面。不影响你现有的 subconverter 容器。
+# 启动： docker compose up -d
+# 访问： http://<本机或内网IP>:8080/
+#
+# 页面里的后端地址会自动用「访问页面时的主机名 + :25500」，
+# 所以用 http://192.168.x.x:8080 打开，生成的链接就会指向 http://192.168.x.x:25500，无需改任何东西。
+services:
+  sub-frontend:
+    image: nginx:alpine
+    container_name: sub-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+    restart: unless-stopped

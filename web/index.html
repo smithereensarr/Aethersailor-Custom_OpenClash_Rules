@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>订阅转换 · Blue 模板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    --container-bg: rgba(255, 255, 255, 0.85);
+    --container-border: rgba(255, 255, 255, 0.4);
+    --shadow: 0 12px 40px rgba(31, 38, 135, 0.08);
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --info-block-bg: rgba(0, 0, 0, 0.02);
+    --info-block-border: rgba(0,0,0,0.04);
+    --link-color: #3182ce;
+    --link-hover: #2b6cb0;
+    --header-gradient: linear-gradient(135deg, #1a202c 0%, #4a5568 100%);
+    --control-bg: rgba(255, 255, 255, 0.72);
+    --control-border: rgba(26, 32, 44, 0.12);
+    --accent: #3182ce;
+    --accent-grad: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+    --field-bg: rgba(255,255,255,0.7);
+    --ok: #2f855a;
+    --err: #c53030;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 50%, #1a1b1e 0%, #000000 100%);
+      --container-bg: rgba(28, 28, 30, 0.7);
+      --container-border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      --text-primary: #f8f9fa;
+      --text-secondary: #a0aec0;
+      --info-block-bg: rgba(255, 255, 255, 0.04);
+      --info-block-border: rgba(255,255,255,0.06);
+      --link-color: #63b3ed;
+      --link-hover: #90cdf4;
+      --header-gradient: linear-gradient(135deg, #ffffff 0%, #90cdf4 100%);
+      --control-bg: rgba(20, 24, 33, 0.7);
+      --control-border: rgba(255, 255, 255, 0.16);
+      --accent: #63b3ed;
+      --accent-grad: linear-gradient(135deg, #4299e1 0%, #63b3ed 100%);
+      --field-bg: rgba(255,255,255,0.05);
+      --ok: #68d391;
+      --err: #fc8181;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--bg-gradient); background-attachment: fixed;
+    padding: 24px; color: var(--text-primary);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    background: var(--container-bg);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-radius: 32px; padding: 40px 46px; max-width: 760px; width: 100%;
+    box-shadow: var(--shadow); border: 1px solid var(--container-border);
+    position: relative; animation: fadeIn .8s cubic-bezier(0.16,1,0.3,1);
+  }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);} }
+  header { text-align: center; margin-bottom: 28px; }
+  h1 {
+    background: var(--header-gradient); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; font-size: 2.6em; margin-bottom: 8px;
+    font-weight: 700; line-height: 1.05;
+  }
+  .subtitle { color: var(--text-secondary); font-size: 1em; font-weight: 500; text-transform: uppercase; opacity: .6; letter-spacing: .04em; }
+
+  .field-label { font-size: .82em; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; opacity: .8; margin: 22px 0 10px; display:flex; align-items:center; gap:8px; }
+  textarea, input[type=text] {
+    width: 100%; font-family: inherit; font-size: .98em; color: var(--text-primary);
+    background: var(--field-bg); border: 1px solid var(--control-border);
+    border-radius: 16px; padding: 15px 16px; resize: vertical; transition: border-color .2s, box-shadow .2s;
+  }
+  textarea { min-height: 96px; line-height: 1.5; word-break: break-all; }
+  textarea:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,.18); }
+  textarea::placeholder { color: var(--text-secondary); opacity: .55; }
+
+  .btn {
+    margin-top: 18px; width: 100%; border: none; cursor: pointer; font: inherit;
+    font-size: 1.05em; font-weight: 700; color: #fff; background: var(--accent-grad);
+    border-radius: 16px; padding: 15px; transition: transform .15s, box-shadow .2s, opacity .2s;
+    box-shadow: 0 10px 24px rgba(49,130,206,.28);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(49,130,206,.36); }
+  .btn:active { transform: translateY(0); }
+
+  .result { margin-top: 24px; display: none; }
+  .result.show { display: block; animation: fadeIn .4s ease; }
+  .result-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .result-head .field-label { margin: 0; }
+  .copy-btn {
+    border: 1px solid var(--control-border); background: var(--control-bg); color: var(--text-primary);
+    font: inherit; font-size: .82em; font-weight: 700; border-radius: 999px; padding: 7px 16px; cursor: pointer;
+    transition: background .2s, transform .15s, border-color .2s;
+  }
+  .copy-btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .copy-btn.done { color: var(--ok); border-color: var(--ok); }
+  #output { background: var(--info-block-bg); }
+  .hint { margin-top: 8px; font-size: .82em; color: var(--text-secondary); opacity: .8; }
+  .msg { margin-top: 10px; font-size: .88em; font-weight: 600; min-height: 1.2em; }
+  .msg.err { color: var(--err); }
+  .msg.ok { color: var(--ok); }
+
+  .section {
+    margin-top: 28px; padding: 20px 24px; background: var(--info-block-bg);
+    border-radius: 20px; border: 1px solid var(--info-block-border);
+  }
+  .section-title { font-size: .82em; font-weight: 700; text-transform: uppercase; letter-spacing:.03em; opacity: .85; margin-bottom: 14px; }
+  ol.steps { padding-left: 1.3em; }
+  ol.steps li { color: var(--text-secondary); line-height: 1.85; font-size: .96em; }
+  ol.steps li b { color: var(--text-primary); }
+  code { font-family: 'Outfit', monospace; background: var(--info-block-bg); border:1px solid var(--info-block-border); border-radius:6px; padding:1px 6px; font-size:.9em; }
+  .footer { margin-top: 26px; text-align: center; color: var(--text-secondary); font-size: .82em; opacity: .6; }
+  a { color: var(--link-color); text-decoration: none; font-weight: 500; }
+  a:hover { color: var(--link-hover); }
+
+  @media (max-width: 600px) {
+    .container { padding: 28px 20px; border-radius: 24px; }
+    h1 { font-size: 2em; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>订阅转换</h1>
+      <p class="subtitle">Blue Template · OpenClash</p>
+    </header>
+
+    <div class="field-label">🔗 你的订阅链接（原始链接，无需编码）</div>
+    <textarea id="input" placeholder="粘贴你的机场订阅链接，例如 https://example.com/subscribe?token=xxxx" spellcheck="false" autocomplete="off"></textarea>
+
+    <button class="btn" id="gen">生成转换后的订阅链接</button>
+    <div class="msg" id="msg"></div>
+
+    <div class="result" id="result">
+      <div class="result-head">
+        <div class="field-label">✅ 转换后的链接（复制到 Clash 客户端使用）</div>
+        <button class="copy-btn" id="copy">复制</button>
+      </div>
+      <textarea id="output" readonly spellcheck="false"></textarea>
+      <div class="hint">把这条链接当作「订阅地址」添加到 OpenClash / Mihomo / Clash 客户端即可，节点更新时它会自动套用 Blue 分流模板。</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📖 使用说明</div>
+      <ol class="steps">
+        <li>在上方输入框粘贴你<b>机场原始订阅链接</b>（不用做任何编码处理）。</li>
+        <li>点击「<b>生成</b>」，下方会出现一条新的订阅链接。</li>
+        <li>点「<b>复制</b>」，把它添加到你的 Clash 客户端的<b>订阅 / 配置</b>里。</li>
+        <li>客户端拉取时会自动经本服务用 <b>Blue 模板</b>转换，生成带防 DNS 泄漏分流规则的配置。</li>
+      </ol>
+    </div>
+
+    <div class="footer">
+      由 <a href="https://github.com/Aethersailor/SubConverter-Extended" target="_blank" rel="noopener">SubConverter-Extended</a>
+      + <a href="https://github.com/Aethersailor/Custom_OpenClash_Rules" target="_blank" rel="noopener">Custom_OpenClash_Rules</a> 驱动
+    </div>
+  </div>
+
+<script>
+  // ===================== 可配置项 =====================
+  // 转换所用模板（raw 链接）。默认 Blue；要换成 Custom，把下面这行替换成 Custom_Clash_Custom.ini 即可。
+  const TEMPLATE_URL = "https://raw.githubusercontent.com/smithereensarr/Aethersailor-Custom_OpenClash_Rules/refs/heads/main/cfg/Custom_Clash_Blue.ini";
+  // const TEMPLATE_URL = "https://raw.githubusercontent.com/smithereensarr/Aethersailor-Custom_OpenClash_Rules/refs/heads/main/cfg/Custom_Clash_Custom.ini";
+
+  // subconverter 后端地址。留空 = 自动用「当前访问页面的主机名 + :25500」，
+  // 这样无论你用 localhost 还是内网 IP 打开，生成的链接都指向同一台机器，上线换域名也自动跟随。
+  // 如需写死，填如 "http://192.168.1.10:25500"
+  const BACKEND_ORIGIN = "";
+
+  // subconverter 端口（仅在 BACKEND_ORIGIN 留空、自动拼接时使用）
+  const BACKEND_PORT = 25500;
+  // ===================================================
+
+  const $ = (id) => document.getElementById(id);
+  const input = $("input"), output = $("output"), result = $("result"), msg = $("msg");
+
+  function backendBase() {
+    if (BACKEND_ORIGIN) return BACKEND_ORIGIN.replace(/\/+$/, "");
+    return location.protocol + "//" + location.hostname + ":" + BACKEND_PORT;
+  }
+
+  function showMsg(text, type) { msg.textContent = text || ""; msg.className = "msg" + (type ? " " + type : ""); }
+
+  function generate() {
+    const raw = input.value.trim();
+    showMsg("");
+    if (!raw) { showMsg("请先粘贴订阅链接", "err"); return; }
+    if (!/^https?:\/\//i.test(raw)) { showMsg("链接需以 http:// 或 https:// 开头", "err"); return; }
+
+    const link = backendBase() + "/sub?target=clash"
+      + "&url=" + encodeURIComponent(raw)
+      + "&config=" + encodeURIComponent(TEMPLATE_URL);
+
+    output.value = link;
+    result.classList.add("show");
+    showMsg("生成成功，记得复制使用 👇", "ok");
+    output.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  async function copy() {
+    const btn = $("copy");
+    try {
+      await navigator.clipboard.writeText(output.value);
+    } catch (e) {
+      output.select(); document.execCommand("copy");
+    }
+    btn.textContent = "已复制 ✓"; btn.classList.add("done");
+    setTimeout(() => { btn.textContent = "复制"; btn.classList.remove("done"); }, 1800);
+  }
+
+  $("gen").addEventListener("click", generate);
+  $("copy").addEventListener("click", copy);
+  input.addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") generate(); });
+</script>
+</body>
+</html>
